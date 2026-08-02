@@ -2,15 +2,29 @@
 
 How should NBA front offices value players returning from major injuries? This project evaluates the factors that matter most: recurrence risk, future availability, and retained on-court value.
 
-## Methodology
+## Summary
+
+- **Motivation:** Valuing a player after injury matters for trades and free agency. This analysis estimates how much a major injury should change projections of availability, reinjury risk, and on-court value.
+- **Method:** Approximately 600 major injury episodes from the past 25 NBA seasons are linked with NBA game logs and performance data. Post-return outcomes account for age, height, prior VORP, and injury mix.
+- **Overall impact:** Relative to the baseline, injured players produce about 20% less VORP than expected, are roughly one-third more likely to suffer another major injury, and play 8% fewer games over the next three seasons.
+- **Injury type:** Hand injuries show little measurable decline, while ankle and foot injuries are the most costly.
+- **Age:** Older players lose substantially more expected VORP after a major injury.
+
+## Detailed methodology
+
+- **Sample:** Approximately 600 major injury episodes from the past 25 NBA seasons.
+- **Major injury definition:** A confirmed surgery, tear or rupture, or fracture that resulted in at least 30 missed games or a validated season-ending absence.
+- **Follow-up:** Reinjury and availability are measured over the next 246 team games after confirmed return. VORP is measured over the player's first three full seasons back.
+- **Comparison group:** The injury sample includes all qualifying major-injury episodes. The no-injury baseline uses top-10 rotation player-seasons, reducing the exposure bias that would arise from comparing injured players with end-of-bench players who rarely play.
+- **Controls:** Models account for age, height, pre-injury VORP, and injury mix. Expected VORP follows the same injured player's projected no-injury path based on prior healthy production and the league aging curve.
 
 We evaluate injured players on three outcomes that drive front-office value:
 
 | Metric | Definition | Front-office lens |
 |---|---|---|
-| Major reinjury risk | Chance of another injury causing at least 30 missed games or ending the season in the first three years after return; same body part unless labeled “any major injury.” | Recurrence risk |
-| Games played | Share of available games played in the first three years after confirmed return. | Availability |
-| VORP lost | Actual VORP in the first three full seasons back versus an age-adjusted expectation based on prior healthy production. | Retained on-court value |
+| Major injury risk after return | Probability of any subsequent major injury during the next 246 team games after confirmed return. Results report overall major-injury risk and separately identify same-body-part reinjuries, which are a subset of the overall risk. | Recurrence risk |
+| Games played proportion | Share of the next 246 team games in which the player appears after confirmed return. | Availability |
+| VORP lost | Percentage of expected VORP not produced during the player's first three full seasons back. | Retained on-court value |
 
 Expected VORP is the projected path for the same player without the injury, based on prior healthy production and the league's typical aging curve. It is not the performance of a separate comparison player.
 
@@ -29,26 +43,28 @@ The full acquisition and merge logic is documented in the [scraping context](con
 - [Source-acquisition notebook](notebooks/01_scrape_sources.ipynb)
 - [Cleaning and dataset-build notebook](notebooks/02_clean_injuries.ipynb)
 - [Recovery and player-value analysis notebook](notebooks/03_analyze_recovery.ipynb)
-- [Regression audit cases](data/audits/regression_cases.csv)
+- [Thirty-case outcome audit](data/analysis/adjusted_multimetric_30_case_audit.csv)
 - [Analysis-ready episode data](data/analysis/adjusted_multimetric_episode_data.csv)
 
 ## Findings
 
 ### Type of injury
 
-Confirmed major injuries are followed by about one-third higher subsequent-injury risk, 10% lower availability, and 20% lower VORP. Ankle and foot injuries are the most damaging, while hand surgeries show little decline. For valuation, body part and procedure matter more than the generic “major injury” label; comparisons control for age and height.
+Major injuries reduce future availability and on-court value, but the magnitude varies substantially by injury type. Injured players are about one-third more likely than the baseline to suffer another major injury over the next 246 team games (33.8% versus 25.0%) and play about 8% fewer games (64.5% versus 70.3%). Hand injuries show little measurable impact, while ankle and foot injuries show the largest penalties.
+
+Players produce approximately 20% less VORP than expected after a major injury. Body-part estimates generally point in the same direction as the reinjury and availability results, but their confidence intervals overlap; the data do not support a precise ranking of injury types by VORP loss.
 
 ![Adjusted outcomes by injury type](assets/injury_type_adjusted_outcomes.png)
 
-### Height and position
+### Height
 
-Taller players have higher same-body reinjury risk even after controlling for injury type, but their availability and VORP differences are modest and not statistically significant. For valuation, height is a recurrence-risk modifier—not an automatic discount, because the evidence does not show that major injuries reduce big-man performance more than guard performance.
+This analysis compares recovery within the major-injury cohort, not baseline injury risk by height. Same-body-part recurrence rises from 11.0% for players below 6'5" to 18.5% for players 6'10" and above after controlling for age and injury mix. Taller players also have larger estimated VORP losses, but only the recurrence difference is statistically significant. Height is therefore a recurrence-risk modifier, not an automatic valuation discount.
 
 ![Adjusted outcomes by height](assets/height_three_outcomes.png)
 
 ### Age
 
-Once normal age-related availability differences are removed, injuries affect games played similarly across ages. Younger players are significantly more likely to recover their prior value, so age should mainly shape the expected performance rebound—not the availability forecast.
+Age matters substantially for on-court value recovery. After accounting for normal age-related availability differences, injuries affect games played similarly across age groups. Estimated VORP loss is nearly three times as large for players age 27 and older, and the older group's loss is statistically significant. Age should therefore shape the expected performance rebound more than the availability forecast.
 
 ![Adjusted outcomes by age](assets/age_selected_three_charts.png)
 
@@ -58,7 +74,7 @@ Once normal age-related availability differences are removed, injuries affect ga
 notebooks/
   01_scrape_sources.ipynb      Acquire and inventory raw source data
   02_clean_injuries.ipynb      Build injury episodes and run cleaning audits
-  03_analyze_recovery.ipynb    Reproduce the reinjury, availability, and VORP findings
+  03_analyze_recovery.ipynb    Produce the reinjury, availability, and VORP findings
 context/
   SCRAPING_CONTEXT.md          Scraping requirements, sources, methodology, and audits
   CLEANING_CONTEXT.md          Cleaning rules, joins, methodology, and regression checks
@@ -89,7 +105,8 @@ Run the notebooks in numeric order. Raw source files are intentionally not commi
 
 ## Future work
 
-- Measure the compounding effect of multiple major injuries.
+- Estimate how multiple major injuries compound and whether their effects differ from a first major injury.
+- Test whether playing through an injury increases the risk of a later major reinjury, quantifying the trade-off between short-term availability and long-term health.
+- Apply the framework to college players to evaluate NBA draft prospects.
 - Add complete post-2023 injury-report coverage.
 - Test stricter same-structure and same-side recurrence definitions.
-- Compare injured players with matched, uninjured players.
