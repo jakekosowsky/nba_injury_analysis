@@ -22,6 +22,16 @@ Expected VORP is the projected path for the same player without the injury, base
 
 The full acquisition and merge logic is documented in the [scraping context](context/SCRAPING_CONTEXT.md) and [cleaning context](context/CLEANING_CONTEXT.md).
 
+## Documentation
+
+- [Scraping requirements, sources, methodology, and audits](context/SCRAPING_CONTEXT.md)
+- [Cleaning rules, joins, outcome definitions, and regression checks](context/CLEANING_CONTEXT.md)
+- [Source-acquisition notebook](notebooks/01_scrape_sources.ipynb)
+- [Cleaning and dataset-build notebook](notebooks/02_clean_injuries.ipynb)
+- [Recovery and player-value analysis notebook](notebooks/03_analyze_recovery.ipynb)
+- [Regression audit cases](data/audits/regression_cases.csv)
+- [Analysis-ready episode data](data/analysis/adjusted_multimetric_episode_data.csv)
+
 ## Findings
 
 ### Type of injury
@@ -83,4 +93,3 @@ Run the notebooks in numeric order. Raw source files are intentionally not commi
 - Add complete post-2023 injury-report coverage.
 - Test stricter same-structure and same-side recurrence definitions.
 - Compare injured players with matched, uninjured players.
-
