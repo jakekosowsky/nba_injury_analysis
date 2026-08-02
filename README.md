@@ -56,13 +56,11 @@ Players produce approximately 20% less VORP than expected after a major injury. 
 
 ![Adjusted outcomes by injury type](assets/injury_type_adjusted_outcomes.png)
 
-### Height
+### Height and age
 
 This analysis compares recovery within the major-injury cohort, not baseline injury risk by height. Same-body-part recurrence rises from 11.0% for players below 6'5" to 18.5% for players 6'10" and above after controlling for age and injury mix. Taller players also have larger estimated VORP losses, but only the recurrence difference is statistically significant. Height is therefore a recurrence-risk modifier, not an automatic valuation discount.
 
 ![Adjusted outcomes by height](assets/height_three_outcomes.png)
-
-### Age
 
 Age matters substantially for on-court value recovery. After accounting for normal age-related availability differences, injuries affect games played similarly across age groups. Estimated VORP loss is nearly three times as large for players age 27 and older, and the older group's loss is statistically significant. Age should therefore shape the expected performance rebound more than the availability forecast.
 
@@ -108,5 +106,3 @@ Run the notebooks in numeric order. Raw source files are intentionally not commi
 - Estimate how multiple major injuries compound and whether their effects differ from a first major injury.
 - Test whether playing through an injury increases the risk of a later major reinjury, quantifying the trade-off between short-term availability and long-term health.
 - Apply the framework to college players to evaluate NBA draft prospects.
-- Add complete post-2023 injury-report coverage.
-- Test stricter same-structure and same-side recurrence definitions.
